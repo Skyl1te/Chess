@@ -1,6 +1,5 @@
 class Figure {
   type = "figure";
-  cellPosition;
   team;
   icon;
 
@@ -8,23 +7,12 @@ class Figure {
     this.team = team;
   }
 
-  /**@param {(cell: Cell) => boolean} processCell*/
-  getAvailableCellsForMoveWithCondition(cells, processCell) {
+  getAvailableCellsForMove(cells, processCell) {
     const availableCells = [];
     cells.forEach((row) => {
       row.forEach((c) => {
-        if (processCell) {
-          if (processCell(c)) {
-            availableCells.push(c.position);
-            c.setIsAvailable(true)
-            if (c.figure) {
-              c.rootEl.classList.add("killable")
-            } else {
-              c.rootEl.classList.add("remove")
-            }
-          } else {
-            c.setIsAvailable(false)
-          }
+        if (processCell(c)) {
+          availableCells.push(c.getStringPosition());
         }
       });
     });
@@ -32,7 +20,12 @@ class Figure {
     return availableCells;
   }
 
-  setCellPosition(position) {
-    this.cellPosition = position;
+  move(fromCell, toCell) {
+    if (toCell.figure) {
+      toCell.rootEl.removeChild(toCell.rootEl.children[0]);
+    }
+    fromCell.setFigure(null);
+    fromCell.rootEl.children[0].remove();
+    toCell.setFigure(this);
   }
 }

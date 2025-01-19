@@ -5,8 +5,8 @@ class Pawn extends Figure {
       team === "white" ? "../../assets/pawnW.png" : "../../assets/pawnB.png";
   }
 
-  getAvailableCellsForMoveWithCondition(cells, currentCell) {
-    return super.getAvailableCellsForMoveWithCondition(cells, (cell) => {
+  getAvailableCellsForMove(cells, currentCell) {
+    return super.getAvailableCellsForMove(cells, (cell) => {
       if (cell.figure && cell.figure.team === this.team) {
         return false;
       } else if (

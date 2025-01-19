@@ -1,8 +1,7 @@
 class Board extends GameObject {
-  /**
-   * @type {Cell[][]}
-   */
+  /** @type {Cell[][]} */
   cells = [];
+  /**@type {Cell} */
   selectedCell = null;
 
   constructor() {
@@ -12,7 +11,7 @@ class Board extends GameObject {
 
   init() {
     this.#initCells();
-    this.initFigures();
+    this.#initFigures();
   }
 
   #initCells() {
@@ -27,20 +26,36 @@ class Board extends GameObject {
     }
   }
 
-  /**
-   * @param {Cell} cell
-   */
+  #initFigures() {
+    this.#initPawns();
+  }
+
+  #initPawns() {
+    for (let i = 0; i < 8; i++) {
+      const pawnWhite = new Pawn("white");
+      const pawnBalck = new Pawn("black");
+      this.setFigurePosition(pawnWhite, POSITION_LETTERS[i] + 2);
+      this.setFigurePosition(pawnBalck, POSITION_LETTERS[i] + 7);
+    }
+  }
+
+  setFigurePosition(figure, position) {
+    const cell = this.getCellWithPosition(position);
+    cell.setFigure(figure);
+  }
+
+  /** @param {Cell} cell */
   selectCell(cell) {
     if (cell.isAvailable) {
-      this.setFigurePosition(this.selectedCell.figure, cell.position);
-      this.selectedCell.rootEl.classList.remove("active");
+      this.selectedCell.figure.move(this.selectedCell, cell);
+      this.selectedCell.removeClassName("active");
       this.selectedCell = null;
     } else {
       this.selectedCell = cell;
-      cell.rootEl.classList.add("active");
+      cell.addClassName("active");
       this.processCells((c) => {
-        if (c.position !== cell.position) {
-          c.rootEl.classList.remove("active");
+        if (c.getStringPosition() !== cell.getStringPosition()) {
+          c.removeClassName("active");
         }
       });
     }
@@ -55,49 +70,20 @@ class Board extends GameObject {
 
   showAvailableCellsForMove(availableCells) {
     this.processCells((c) => {
-      if (availableCells.includes(c.position)) {
+      if (availableCells.includes(c.getStringPosition())) {
         c.setIsAvailable(true);
-        c.rootEl.classList.add("available");
       } else {
         c.setIsAvailable(false);
-        c.rootEl.classList.remove("available");
       }
     });
   }
 
-  initFigures() {
-    this.#initPawns();
-  }
-
-  #initPawns() {
-    for (let i = 0; i < 8; i++) {
-      const pawnWhite = new Pawn("white");
-      const pawnBalck = new Pawn("black");
-      this.setFigurePosition(pawnWhite, POSITIONS[i] + 2);
-      this.setFigurePosition(pawnBalck, POSITIONS[i] + 7);
-    }
-  }
-
-  setFigurePosition(figure, position) {
-    const toCell = this.getCell(position);
-    if (toCell.figure) {
-      toCell.setFigure(figure)
-      toCell.rootEl.removeChild(toCell.rootEl.children[0])
-    }
-    if (figure.cellPosition) {
-      const prevCell = this.getCell(figure.cellPosition);
-      prevCell.setFigure(null);
-      prevCell.rootEl.children[0].remove();
-    }
-    toCell.setFigure(figure);
-    const iconImg = document.createElement("img");
-    iconImg.setAttribute("src", figure.icon);
-    toCell.rootEl.appendChild(iconImg);
-    figure.setCellPosition(position);
-  }
-
-  getCell(position) {
+  getCellWithPosition(position) {
     const [y, x] = Cell.convertPosition(position);
     return this.cells[y][x];
+  }
+
+  getCellWithCoords(x, y) {
+    return this.cells[y][x]
   }
 }
