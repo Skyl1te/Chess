@@ -4,7 +4,7 @@ class Cell extends GameObject {
   figure = null;
   #position;
   isAvailable = false;
-  coords = { y: null, x: null };
+  #coords = { y: null, x: null };
 
   /**
    * @returns {[x: string, y: string]} matrix indexes
@@ -50,8 +50,8 @@ class Cell extends GameObject {
         break;
       }
     }
-    this.coords.x = x;
-    this.coords.y = y - 1;
+    this.#coords.x = x;
+    this.#coords.y = 8 - y;
   }
 
   init(board) {
@@ -65,12 +65,9 @@ class Cell extends GameObject {
   #startListeners(board) {
     this.rootEl.addEventListener("click", (e) => {
       board.selectCell(this);
+      board.resetAvailableCellsForMove();
       if (this.figure && board.selectedCell) {
-        board.showAvailableCellsForMove(
-          this.figure.getAvailableCellsForMove(board.cells, this)
-        );
-      } else {
-        board.showAvailableCellsForMove([]);
+        this.figure.displayAvailableCellsForMove(board);
       }
     });
   }
@@ -126,7 +123,6 @@ class Cell extends GameObject {
       iconImg.setAttribute("src", figure.icon);
       this.rootEl.appendChild(iconImg);
     }
-
   }
 
   removeClassName(className) {
@@ -139,5 +135,9 @@ class Cell extends GameObject {
 
   getStringPosition() {
     return this.#position;
+  }
+
+  getCoords() {
+    return this.#coords;
   }
 }

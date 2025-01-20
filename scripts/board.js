@@ -68,13 +68,9 @@ class Board extends GameObject {
     });
   }
 
-  showAvailableCellsForMove(availableCells) {
+  resetAvailableCellsForMove() {
     this.processCells((c) => {
-      if (availableCells.includes(c.getStringPosition())) {
-        c.setIsAvailable(true);
-      } else {
-        c.setIsAvailable(false);
-      }
+      c.setIsAvailable(false);
     });
   }
 
@@ -83,7 +79,11 @@ class Board extends GameObject {
     return this.cells[y][x];
   }
 
+  setAvailableCellWithCoords(x, y) {
+    this.cells[y][x].setIsAvailable(true)
+  }
+
   getCellWithCoords(x, y) {
-    return this.cells[y][x]
+    return this.cells[y][x];
   }
 }
