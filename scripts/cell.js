@@ -1,57 +1,57 @@
-const POSITIONS = ["a", "b", "c", "d", "e", "f", "g", "h"];
+const POSITION_LETTERS = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
 class Cell extends GameObject {
   figure = null;
-  position;
+  #position;
   isAvailable = false;
-  coords = { y: null, x: null };
+  #coords = { y: null, x: null };
 
   /**
    * @returns {[x: string, y: string]} matrix indexes
    */
   static convertPosition(pos) {
     const [letter, num] = pos.split("");
-    return [8 - num, POSITIONS.indexOf(letter)];
+    return [8 - num, POSITION_LETTERS.indexOf(letter)];
   }
 
-  constructor(letterNumber, number) {
+  constructor(x, y) {
     super();
-    switch (letterNumber) {
+    switch (x) {
       case 0: {
-        this.position = "a" + number;
+        this.#position = "a" + y;
         break;
       }
       case 1: {
-        this.position = "b" + number;
+        this.#position = "b" + y;
         break;
       }
       case 2: {
-        this.position = "c" + number;
+        this.#position = "c" + y;
         break;
       }
       case 3: {
-        this.position = "d" + number;
+        this.#position = "d" + y;
         break;
       }
       case 4: {
-        this.position = "e" + number;
+        this.#position = "e" + y;
         break;
       }
       case 5: {
-        this.position = "f" + number;
+        this.#position = "f" + y;
         break;
       }
       case 6: {
-        this.position = "g" + number;
+        this.#position = "g" + y;
         break;
       }
       case 7: {
-        this.position = "h" + number;
+        this.#position = "h" + y;
         break;
       }
     }
-    this.coords.x = letterNumber;
-    this.coords.y = number - 1;
+    this.#coords.x = x;
+    this.#coords.y = 8 - y;
   }
 
   init(board) {
@@ -65,12 +65,9 @@ class Cell extends GameObject {
   #startListeners(board) {
     this.rootEl.addEventListener("click", (e) => {
       board.selectCell(this);
+      board.resetAvailableCellsForMove();
       if (this.figure && board.selectedCell) {
-        board.showAvailableCellsForMove(
-          this.figure.getAvailableCellsForMoveWithCondition(board.cells, this)
-        );
-      } else {
-        board.showAvailableCellsForMove([]);
+        this.figure.displayAvailableCellsForMove(board);
       }
     });
   }
@@ -79,8 +76,8 @@ class Cell extends GameObject {
     const divCell = document.createElement("div");
     divCell.classList.add(
       "cell",
-      this.#getCellColor(this.position),
-      this.position
+      this.#getCellColor(this.#position),
+      this.#position
     );
     divBoard.appendChild(divCell);
 
@@ -107,12 +104,40 @@ class Cell extends GameObject {
 
   setIsAvailable(isAvailable) {
     this.isAvailable = isAvailable;
+    if (isAvailable) {
+      this.addClassName("available");
+      if (this.figure) {
+        this.addClassName("killable");
+      } else {
+        this.removeClassName("killable");
+      }
+    } else {
+      this.removeClassName("available");
+    }
   }
 
   setFigure(figure) {
     this.figure = figure;
-    // const child = document.createElement("img");
-    // child.setAttribute("src", figure.icon);
-    // this.rootEl.replaceChildren(child);
+    if (figure) {
+      const iconImg = document.createElement("img");
+      iconImg.setAttribute("src", figure.icon);
+      this.rootEl.appendChild(iconImg);
+    }
+  }
+
+  removeClassName(className) {
+    this.rootEl.classList.remove(className);
+  }
+
+  addClassName(className) {
+    this.rootEl.classList.add(className);
+  }
+
+  getStringPosition() {
+    return this.#position;
+  }
+
+  getCoords() {
+    return this.#coords;
   }
 }

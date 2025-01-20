@@ -5,41 +5,32 @@ class Pawn extends Figure {
       team === "white" ? "../../assets/pawnW.png" : "../../assets/pawnB.png";
   }
 
-  getAvailableCellsForMoveWithCondition(cells, currentCell) {
-    return super.getAvailableCellsForMoveWithCondition(cells, (cell) => {
-      if (cell.figure && cell.figure.team === this.team) {
-        return false;
-      } else if (
-        !cell.figure &&
-        cell.coords.y === currentCell.coords.y + 1 &&
-        cell.coords.x === currentCell.coords.x &&
-        this.team === "white"
-      ) {
-        return true;
-      } else if (
-        !cell.figure &&
-        cell.coords.y === currentCell.coords.y - 1 &&
-        cell.coords.x === currentCell.coords.x &&
-        this.team === "black"
-      ) {
-        return true;
-      } else if (
-        this.team === "white" &&
-        cell.figure &&
-        (currentCell.coords.x - 1 === cell.coords.x ||
-          currentCell.coords.x + 1 === cell.coords.x) &&
-        cell.coords.y === currentCell.coords.y + 1
-      ) {
-        return true;
-      } else if (
-        this.team === "black" &&
-        cell.figure &&
-        (currentCell.coords.x - 1 === cell.coords.x ||
-          currentCell.coords.x + 1 === cell.coords.x) &&
-        cell.coords.y === currentCell.coords.y - 1
-      ) {
-        return true;
+  /** @param {Board} board */
+  displayAvailableCellsForMove(board) {
+    const { x, y } = board.selectedCell.getCoords();
+    this.#setAvailableBaseMoves(board)
+  }
+
+  /** @param {Board} board */
+  #setAvailableBaseMoves(board) {
+    const { x, y } = board.selectedCell.getCoords();
+    for (let i = 1; i <= 2; i++) {
+      let cellForMove
+
+      if (this.team === "black") {
+        cellForMove = board.getCellWithCoords(x, y + i)
+      } else {
+        cellForMove = board.getCellWithCoords(x, y - i)
       }
-    });
+
+      if (!cellForMove.figure) {
+        cellForMove.setIsAvailable(true);
+        if (this.hasMoved) {
+          break;
+        }
+      } else {
+        break
+      }
+    }
   }
 }
