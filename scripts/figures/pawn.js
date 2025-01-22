@@ -54,7 +54,7 @@ class Pawn extends Figure {
     }
 
     cellsForKill.forEach((c) => {
-      if (c.figure && c.figure.team !== this.team) {
+      if (c && c.figure && c.figure.team !== this.team) {
         c.setIsAvailable(true);
       }
     });
@@ -70,6 +70,7 @@ class Pawn extends Figure {
 
     cellsNextToSelectedCell.forEach((c) => {
       if (
+        c &&
         c.figure &&
         c.figure.type === "pawn" &&
         c.figure.hasRecentlyDoublemoved

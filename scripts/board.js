@@ -50,9 +50,9 @@ class Board extends GameObject {
       this.#moveSelectedFigureTo(cell);
       this.#resetActiveCell();
     } else {
-      this.#selectCell(cell)
+      this.#selectCell(cell);
     }
-    this.#resetAvailableCellsForMove()
+    this.#resetAvailableCellsForMove();
   }
 
   #selectCell(cell) {
@@ -115,6 +115,10 @@ class Board extends GameObject {
   }
 
   getCellWithCoords(x, y) {
-    return this.cells[y][x];
+    try {
+      return this.cells[y][x];
+    } catch (e) {
+      // coords out of board
+    }
   }
 }
