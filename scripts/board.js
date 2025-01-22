@@ -45,20 +45,51 @@ class Board extends GameObject {
   }
 
   /** @param {Cell} cell */
-  selectCell(cell) {
+  onClickCell(cell) {
     if (cell.isAvailable) {
-      this.selectedCell.figure.move(this.selectedCell, cell);
-      this.selectedCell.removeClassName("active");
-      this.selectedCell = null;
+      this.#moveSelectedFigureTo(cell);
+      this.#resetActiveCell();
     } else {
-      this.selectedCell = cell;
-      cell.addClassName("active");
-      this.processCells((c) => {
-        if (c.getStringPosition() !== cell.getStringPosition()) {
-          c.removeClassName("active");
-        }
-      });
+      this.#selectCell(cell)
     }
+    this.#resetAvailableCellsForMove()
+  }
+
+  #selectCell(cell) {
+    if (this.selectedCell) {
+      this.selectedCell.removeClassName("active");
+    }
+    this.selectedCell = cell;
+    cell.addClassName("active");
+  }
+
+  #moveSelectedFigureTo(toCell) {
+    if (toCell.isAvailableTakeEnPass) {
+      this.selectedCell.figure.takeEnPass(this.selectedCell, toCell, this);
+    } else {
+      this.#resetPawnsTakeEnPass();
+      this.selectedCell.figure.move(this.selectedCell, toCell);
+    }
+  }
+
+  #resetActiveCell() {
+    this.selectedCell.removeClassName("active");
+    this.selectedCell = null;
+  }
+
+  #resetPawnsTakeEnPass() {
+    this.processCells((c) => {
+      if (c.isAvailableTakeEnPass) {
+        c.setIsAvailableTakeEnPass(false);
+      }
+      if (
+        c.figure &&
+        c.figure.type === "pawn" &&
+        c.figure.hasRecentlyDoublemoved
+      ) {
+        c.figure.setHasRecentlyDoublemoved(false);
+      }
+    });
   }
 
   /**@param {(cell: Cell) => void} callback  */
@@ -68,7 +99,7 @@ class Board extends GameObject {
     });
   }
 
-  resetAvailableCellsForMove() {
+  #resetAvailableCellsForMove() {
     this.processCells((c) => {
       c.setIsAvailable(false);
     });
@@ -80,7 +111,7 @@ class Board extends GameObject {
   }
 
   setAvailableCellWithCoords(x, y) {
-    this.cells[y][x].setIsAvailable(true)
+    this.cells[y][x].setIsAvailable(true);
   }
 
   getCellWithCoords(x, y) {

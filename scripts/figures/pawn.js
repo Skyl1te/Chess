@@ -1,5 +1,6 @@
 class Pawn extends Figure {
-  hasRecentlyDoobleMoved = false;
+  hasRecentlyDoublemoved = false;
+  type = "pawn"
 
   constructor(team) {
     super(team);
@@ -12,6 +13,7 @@ class Pawn extends Figure {
     const coords = board.selectedCell.getCoords();
     this.#setAvailableBaseMoves(board, coords);
     this.#setAvailableKills(board, coords);
+    this.#setAvailableTakeEnPass(board, coords);
   }
 
   /** @param {Board} board */
@@ -50,7 +52,7 @@ class Pawn extends Figure {
         board.getCellWithCoords(coords.x - 1, coords.y - 1),
       ];
     }
-    
+
     cellsForKill.forEach((c) => {
       if (c.figure && c.figure.team !== this.team) {
         c.setIsAvailable(true);
@@ -58,12 +60,66 @@ class Pawn extends Figure {
     });
   }
 
+  /** @param {Board} board */
+  #setAvailableTakeEnPass(board, coords) {
+    let cellsNextToSelectedCell = [
+      board.getCellWithCoords(coords.x + 1, coords.y),
+      board.getCellWithCoords(coords.x - 1, coords.y),
+    ];
+    let availableCell;
+
+    cellsNextToSelectedCell.forEach((c) => {
+      if (
+        c.figure &&
+        c.figure.type === "pawn" &&
+        c.figure.hasRecentlyDoublemoved
+      ) {
+        if (this.team === "black") {
+          availableCell = board.getCellWithCoords(
+            c.getCoords().x,
+            c.getCoords().y + 1
+          );
+        } else {
+          availableCell = board.getCellWithCoords(
+            c.getCoords().x,
+            c.getCoords().y - 1
+          );
+        }
+      }
+    });
+
+    if (availableCell) {
+      availableCell.setIsAvailableTakeEnPass(true);
+    }
+  }
+
   move(fromCell, toCell) {
     super.move(fromCell, toCell);
     if (Math.abs(fromCell.getCoords().y - toCell.getCoords().y) === 2) {
-      this.hasRecentlyDoobleMoved = true;
-    } else {
-      this.hasRecentlyDoobleMoved = false;
+      this.setHasRecentlyDoublemoved(true);
     }
+  }
+
+  takeEnPass(fromCell, toCell, board) {
+    this.move(fromCell, toCell);
+    let cellWithFigure;
+    if (this.team === "black") {
+      cellWithFigure = board.getCellWithCoords(
+        toCell.getCoords().x,
+        toCell.getCoords().y - 1
+      );
+    } else {
+      cellWithFigure = board.getCellWithCoords(
+        toCell.getCoords().x,
+        toCell.getCoords().y + 1
+      );
+    }
+
+    toCell.setIsAvailableTakeEnPass(false);
+    cellWithFigure.setFigure(null);
+  }
+
+  setHasRecentlyDoublemoved(val) {
+    this.hasRecentlyDoublemoved = val;
   }
 }

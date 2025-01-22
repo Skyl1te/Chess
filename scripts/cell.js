@@ -5,6 +5,7 @@ class Cell extends GameObject {
   #position;
   isAvailable = false;
   #coords = { y: null, x: null };
+  isAvailableTakeEnPass = false;
 
   /**
    * @returns {[x: string, y: string]} matrix indexes
@@ -64,8 +65,7 @@ class Cell extends GameObject {
    */
   #startListeners(board) {
     this.rootEl.addEventListener("click", (e) => {
-      board.selectCell(this);
-      board.resetAvailableCellsForMove();
+      board.onClickCell(this);
       if (this.figure && board.selectedCell) {
         this.figure.displayAvailableCellsForMove(board);
       }
@@ -122,7 +122,15 @@ class Cell extends GameObject {
       const iconImg = document.createElement("img");
       iconImg.setAttribute("src", figure.icon);
       this.rootEl.appendChild(iconImg);
+    } else {
+      this.rootEl.children[0].remove();
     }
+  }
+
+  setIsAvailableTakeEnPass(val) {
+    this.isAvailableTakeEnPass = val;
+    this.setIsAvailable(true);
+    this.addClassName("killable");
   }
 
   removeClassName(className) {
