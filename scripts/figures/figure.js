@@ -13,7 +13,6 @@ class Figure {
       toCell.rootEl.removeChild(toCell.rootEl.children[0]);
     }
     fromCell.setFigure(null);
-    fromCell.rootEl.children[0].remove();
     toCell.setFigure(this);
     if (!this.hasMoved) {
       this.hasMoved = true
