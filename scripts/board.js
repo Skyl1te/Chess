@@ -28,6 +28,7 @@ class Board extends GameObject {
 
   #initFigures() {
     this.#initPawns();
+    this.#initRooks()
   }
 
   #initPawns() {
@@ -37,6 +38,18 @@ class Board extends GameObject {
       this.setFigurePosition(pawnWhite, POSITION_LETTERS[i] + 2);
       this.setFigurePosition(pawnBalck, POSITION_LETTERS[i] + 7);
     }
+  }
+
+  #initRooks() {
+    const r1B = new Rook("black")
+    const r2B = new Rook("black")
+    const r1W = new Rook("white")
+    const r2W = new Rook("white")
+
+    this.setFigurePosition(r1B, "a8")
+    this.setFigurePosition(r2B, "h8")
+    this.setFigurePosition(r1W, "a1")
+    this.setFigurePosition(r2W, "h1")
   }
 
   setFigurePosition(figure, position) {

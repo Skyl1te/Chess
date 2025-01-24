@@ -1,11 +1,13 @@
 class Pawn extends Figure {
   hasRecentlyDoublemoved = false;
-  type = "pawn"
+  type = "pawn";
 
   constructor(team) {
     super(team);
     this.icon =
-      team === "white" ? "../../assets/pawnW.png" : "../../assets/pawnB.png";
+      team === "white"
+        ? "https://upload.wikimedia.org/wikipedia/commons/0/04/Chess_plt60.png"
+        : "https://upload.wikimedia.org/wikipedia/commons/c/cd/Chess_pdt60.png";
   }
 
   /** @param {Board} board */
