@@ -1,6 +1,4 @@
 class GameObject {
-  /**
-   * @type {Element | null}
-   */
+  /** @type {Element | null} */
   rootEl = null;
 }

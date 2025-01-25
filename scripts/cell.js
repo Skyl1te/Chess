@@ -7,9 +7,7 @@ class Cell extends GameObject {
   #coords = { y: null, x: null };
   isAvailableTakeEnPass = false;
 
-  /**
-   * @returns {[x: string, y: string]} matrix indexes
-   */
+  /** @returns {[x: string, y: string]} matrix indexes */
   static convertPosition(pos) {
     const [letter, num] = pos.split("");
     return [8 - num, POSITION_LETTERS.indexOf(letter)];
@@ -60,9 +58,7 @@ class Cell extends GameObject {
     this.#startListeners(board);
   }
 
-  /**
-   * @param {Board} board
-   */
+  /** @param {Board} board */
   #startListeners(board) {
     this.rootEl.addEventListener("click", (e) => {
       board.onClickCell(this);
