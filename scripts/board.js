@@ -31,6 +31,7 @@ class Board extends GameObject {
     this.#initRooks();
     this.#initKnights();
     this.#initBishops();
+    this.#initQueens();
   }
 
   #initPawns() {
@@ -76,6 +77,13 @@ class Board extends GameObject {
     this.setFigurePosition(b2W, "f1")
     this.setFigurePosition(b1B, "f8")
     this.setFigurePosition(b2B, "c8")
+  }
+
+  #initQueens() {
+    const qB = new Queen("black")
+    const qW = new Queen("white")
+    this.setFigurePosition(qB, "d8")
+    this.setFigurePosition(qW, "d1")
   }
 
   setFigurePosition(figure, position) {
