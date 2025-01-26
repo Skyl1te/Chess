@@ -30,6 +30,7 @@ class Board extends GameObject {
     this.#initPawns();
     this.#initRooks();
     this.#initKnights();
+    this.#initBishops();
   }
 
   #initPawns() {
@@ -63,6 +64,18 @@ class Board extends GameObject {
     this.setFigurePosition(k2W, "g1");
     this.setFigurePosition(k1B, "b8");
     this.setFigurePosition(k2B, "g8");
+  }
+
+  #initBishops() {
+    const b1W = new Bishop("white")
+    const b2W = new Bishop("white")
+    const b1B = new Bishop("black")
+    const b2B = new Bishop("black")
+
+    this.setFigurePosition(b1W, "c1")
+    this.setFigurePosition(b2W, "f1")
+    this.setFigurePosition(b1B, "f8")
+    this.setFigurePosition(b2B, "c8")
   }
 
   setFigurePosition(figure, position) {
