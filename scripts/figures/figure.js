@@ -8,6 +8,9 @@ class Figure {
     this.team = team;
   }
 
+    /** @param {Board} board */
+  displayAvailableCellsForMove(board) {}
+
   move(fromCell, toCell) {
     if (toCell.figure) {
       toCell.rootEl.removeChild(toCell.rootEl.children[0]);

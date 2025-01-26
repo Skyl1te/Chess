@@ -28,7 +28,8 @@ class Board extends GameObject {
 
   #initFigures() {
     this.#initPawns();
-    this.#initRooks()
+    this.#initRooks();
+    this.#initKnights();
   }
 
   #initPawns() {
@@ -41,15 +42,27 @@ class Board extends GameObject {
   }
 
   #initRooks() {
-    const r1B = new Rook("black")
-    const r2B = new Rook("black")
-    const r1W = new Rook("white")
-    const r2W = new Rook("white")
+    const r1B = new Rook("black");
+    const r2B = new Rook("black");
+    const r1W = new Rook("white");
+    const r2W = new Rook("white");
 
-    this.setFigurePosition(r1B, "a8")
-    this.setFigurePosition(r2B, "h8")
-    this.setFigurePosition(r1W, "a1")
-    this.setFigurePosition(r2W, "h1")
+    this.setFigurePosition(r1B, "a8");
+    this.setFigurePosition(r2B, "h8");
+    this.setFigurePosition(r1W, "a1");
+    this.setFigurePosition(r2W, "h1");
+  }
+
+  #initKnights() {
+    const k1W = new Knight("white");
+    const k1B = new Knight("black");
+    const k2B = new Knight("black");
+    const k2W = new Knight("white");
+
+    this.setFigurePosition(k1W, "b1");
+    this.setFigurePosition(k2W, "g1");
+    this.setFigurePosition(k1B, "b8");
+    this.setFigurePosition(k2B, "g8");
   }
 
   setFigurePosition(figure, position) {
