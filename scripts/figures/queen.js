@@ -11,20 +11,31 @@ class Queen extends Figure {
   }
 
   displayAvailableCellsForMove(board) {
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: 1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { y: 1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: -1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { y: -1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: 1, y: 1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, {
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: 1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      y: 1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: -1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      y: -1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: 1,
+      y: 1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
       x: -1,
       y: -1,
     });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, {
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
       x: -1,
       y: 1,
     });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, {
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
       x: 1,
       y: -1,
     });

@@ -22,7 +22,7 @@ class Figure {
     }
   }
 
-  setAvailableCellsWithOffset(startCell, board, offset) {
+  recursiveSetAvailableCellsWithOffset(startCell, board, offset) {
     if (!startCell) {
       return;
     }
@@ -40,7 +40,7 @@ class Figure {
       }
     }
 
-    this.setAvailableCellsWithOffset(
+    this.recursiveSetAvailableCellsWithOffset(
       board.getCellWithCoords(
         startCell.getCoords().x + (offset.x || 0),
         startCell.getCoords().y + (offset.y || 0)
@@ -48,5 +48,14 @@ class Figure {
       board,
       offset
     );
+  }
+
+  setAvailableCellWithOffset(offsets, board) {
+    const cell = board.getCellWithOffset(offsets.x, offsets.y);
+    if (cell) {
+      if (!cell.figure || (cell.figure && cell.figure.team !== this.team)) {
+        cell.setIsAvailable(true);
+      }
+    }
   }
 }
