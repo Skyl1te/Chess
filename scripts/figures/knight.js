@@ -1,4 +1,6 @@
 class Knight extends Figure {
+  type = "knight"
+  
   constructor(team) {
     super(team);
     if (this.team === "white") {

@@ -1,4 +1,6 @@
 class Queen extends Figure {
+  type = "queen"
+  
   constructor(team) {
     super(team);
     if (team === "white") {

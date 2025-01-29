@@ -122,6 +122,11 @@ class Board extends GameObject {
   #moveSelectedFigureTo(toCell) {
     if (toCell.isAvailableTakeEnPass) {
       this.selectedCell.figure.takeEnPass(this.selectedCell, toCell, this);
+    } else if (
+      toCell.isAvailableCastle &&
+      this.selectedCell.hasFigureWithType("king")
+    ) {
+      this.selectedCell.figure.castle(this.selectedCell, toCell, this);
     } else {
       this.#resetPawnsTakeEnPass();
       this.selectedCell.figure.move(this.selectedCell, toCell);
@@ -158,6 +163,7 @@ class Board extends GameObject {
   #resetAvailableCellsForMove() {
     this.processCells((c) => {
       c.setIsAvailable(false);
+      c.setIsAvailableCastle(false);
     });
   }
 

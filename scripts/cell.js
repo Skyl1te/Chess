@@ -6,6 +6,7 @@ class Cell extends GameObject {
   isAvailable = false;
   #coords = { y: null, x: null };
   isAvailableTakeEnPass = false;
+  isAvailableCastle = false;
 
   /** @returns {[x: string, y: string]} matrix indexes */
   static convertPosition(pos) {
@@ -129,12 +130,24 @@ class Cell extends GameObject {
     this.addClassName("killable");
   }
 
+  setIsAvailableCastle(val) {
+    this.isAvailableCastle = val;
+  }
+
   removeClassName(className) {
     this.rootEl.classList.remove(className);
   }
 
   addClassName(className) {
     this.rootEl.classList.add(className);
+  }
+
+  isEmpty() {
+    return !this.figure;
+  }
+
+  hasFigureWithType(type) {
+    return !!(this.figure && this.figure.type === type);
   }
 
   getStringPosition() {
