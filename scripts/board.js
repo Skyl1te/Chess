@@ -111,6 +111,11 @@ class Board extends GameObject {
     this.#resetAvailableCellsForMove();
   }
 
+  #resetActiveCell() {
+    this.selectedCell.removeClassName("active");
+    this.selectedCell = null;
+  }
+
   #selectCell(cell) {
     if (this.selectedCell) {
       this.selectedCell.removeClassName("active");
@@ -122,10 +127,7 @@ class Board extends GameObject {
   #moveSelectedFigureTo(toCell) {
     if (toCell.isAvailableTakeEnPass) {
       this.selectedCell.figure.takeEnPass(this.selectedCell, toCell, this);
-    } else if (
-      toCell.isAvailableCastle &&
-      this.selectedCell.hasFigureWithType("king")
-    ) {
+    } else if (toCell.isAvailableCastle) {
       this.selectedCell.figure.castle(this.selectedCell, toCell, this);
     } else {
       this.#resetPawnsTakeEnPass();
@@ -133,21 +135,12 @@ class Board extends GameObject {
     }
   }
 
-  #resetActiveCell() {
-    this.selectedCell.removeClassName("active");
-    this.selectedCell = null;
-  }
-
   #resetPawnsTakeEnPass() {
     this.processCells((c) => {
       if (c.isAvailableTakeEnPass) {
         c.setIsAvailableTakeEnPass(false);
       }
-      if (
-        c.figure &&
-        c.figure.type === "pawn" &&
-        c.figure.hasRecentlyDoublemoved
-      ) {
+      if (c.hasFigureWithType("pawn") && c.figure.hasRecentlyDoublemoved) {
         c.figure.setHasRecentlyDoublemoved(false);
       }
     });
@@ -188,6 +181,8 @@ class Board extends GameObject {
     try {
       const { x, y } = initialCell.getCoords();
       return this.getCellWithCoords(x + offsetX, y + offsetY);
-    } catch (e) {}
+    } catch (e) {
+      // coords out of board
+    }
   }
 }

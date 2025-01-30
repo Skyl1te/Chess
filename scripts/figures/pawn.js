@@ -66,12 +66,7 @@ class Pawn extends Figure {
     let availableCell;
 
     cellsNextToSelectedCell.forEach((c) => {
-      if (
-        c &&
-        c.figure &&
-        c.figure.type === "pawn" &&
-        c.figure.hasRecentlyDoublemoved
-      ) {
+      if (c && c.hasFigureWithType("pawn") && c.figure.hasRecentlyDoublemoved) {
         if (this.team === "black") {
           availableCell = board.getCellWithOffset(0, 1, c);
         } else {
