@@ -18,9 +18,17 @@ class Rook extends Figure {
   }
 
   #showRookAvailableCells(board) {
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: -1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: 1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { y: -1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { y: 1 });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: -1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: 1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      y: -1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      y: 1,
+    });
   }
 }

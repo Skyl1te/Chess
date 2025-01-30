@@ -32,6 +32,7 @@ class Board extends GameObject {
     this.#initKnights();
     this.#initBishops();
     this.#initQueens();
+    this.#initKings();
   }
 
   #initPawns() {
@@ -68,22 +69,30 @@ class Board extends GameObject {
   }
 
   #initBishops() {
-    const b1W = new Bishop("white")
-    const b2W = new Bishop("white")
-    const b1B = new Bishop("black")
-    const b2B = new Bishop("black")
+    const b1W = new Bishop("white");
+    const b2W = new Bishop("white");
+    const b1B = new Bishop("black");
+    const b2B = new Bishop("black");
 
-    this.setFigurePosition(b1W, "c1")
-    this.setFigurePosition(b2W, "f1")
-    this.setFigurePosition(b1B, "f8")
-    this.setFigurePosition(b2B, "c8")
+    this.setFigurePosition(b1W, "c1");
+    this.setFigurePosition(b2W, "f1");
+    this.setFigurePosition(b1B, "f8");
+    this.setFigurePosition(b2B, "c8");
   }
 
   #initQueens() {
-    const qB = new Queen("black")
-    const qW = new Queen("white")
-    this.setFigurePosition(qB, "d8")
-    this.setFigurePosition(qW, "d1")
+    const qB = new Queen("black");
+    const qW = new Queen("white");
+    this.setFigurePosition(qB, "d8");
+    this.setFigurePosition(qW, "d1");
+  }
+
+  #initKings() {
+    const kW = new King("white");
+    const kB = new King("black");
+
+    this.setFigurePosition(kW, "e1");
+    this.setFigurePosition(kB, "e8");
   }
 
   setFigurePosition(figure, position) {
@@ -113,6 +122,11 @@ class Board extends GameObject {
   #moveSelectedFigureTo(toCell) {
     if (toCell.isAvailableTakeEnPass) {
       this.selectedCell.figure.takeEnPass(this.selectedCell, toCell, this);
+    } else if (
+      toCell.isAvailableCastle &&
+      this.selectedCell.hasFigureWithType("king")
+    ) {
+      this.selectedCell.figure.castle(this.selectedCell, toCell, this);
     } else {
       this.#resetPawnsTakeEnPass();
       this.selectedCell.figure.move(this.selectedCell, toCell);
@@ -149,6 +163,7 @@ class Board extends GameObject {
   #resetAvailableCellsForMove() {
     this.processCells((c) => {
       c.setIsAvailable(false);
+      c.setIsAvailableCastle(false);
     });
   }
 
@@ -167,5 +182,12 @@ class Board extends GameObject {
     } catch (e) {
       // coords out of board
     }
+  }
+
+  getCellWithOffset(offsetX, offsetY, initialCell = this.selectedCell) {
+    try {
+      const { x, y } = initialCell.getCoords();
+      return this.getCellWithCoords(x + offsetX, y + offsetY);
+    } catch (e) {}
   }
 }

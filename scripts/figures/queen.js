@@ -1,4 +1,6 @@
 class Queen extends Figure {
+  type = "queen"
+  
   constructor(team) {
     super(team);
     if (team === "white") {
@@ -11,20 +13,31 @@ class Queen extends Figure {
   }
 
   displayAvailableCellsForMove(board) {
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: 1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { y: 1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: -1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { y: -1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, { x: 1, y: 1 });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, {
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: 1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      y: 1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: -1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      y: -1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+      x: 1,
+      y: 1,
+    });
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
       x: -1,
       y: -1,
     });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, {
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
       x: -1,
       y: 1,
     });
-    this.setAvailableCellsWithOffset(board.selectedCell, board, {
+    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
       x: 1,
       y: -1,
     });

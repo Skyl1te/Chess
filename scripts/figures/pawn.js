@@ -12,21 +12,20 @@ class Pawn extends Figure {
 
   /** @param {Board} board */
   displayAvailableCellsForMove(board) {
-    const coords = board.selectedCell.getCoords();
-    this.#setAvailableBaseMoves(board, coords);
-    this.#setAvailableKills(board, coords);
-    this.#setAvailableTakeEnPass(board, coords);
+    this.#setAvailableBaseMoves(board);
+    this.#setAvailableKills(board);
+    this.#setAvailableTakeEnPass(board);
   }
 
   /** @param {Board} board */
-  #setAvailableBaseMoves(board, coords) {
+  #setAvailableBaseMoves(board) {
     for (let i = 1; i <= 2; i++) {
       let cellForMove;
 
       if (this.team === "black") {
-        cellForMove = board.getCellWithCoords(coords.x, coords.y + i);
+        cellForMove = board.getCellWithOffset(0, i);
       } else {
-        cellForMove = board.getCellWithCoords(coords.x, coords.y - i);
+        cellForMove = board.getCellWithOffset(0, -i);
       }
 
       if (!cellForMove.figure) {
@@ -41,18 +40,14 @@ class Pawn extends Figure {
   }
 
   /** @param {Board} board */
-  #setAvailableKills(board, coords) {
-    let cellsForKill;
+  #setAvailableKills(board) {
+    let cellsForKill = [];
     if (this.team === "black") {
-      cellsForKill = [
-        board.getCellWithCoords(coords.x + 1, coords.y + 1),
-        board.getCellWithCoords(coords.x - 1, coords.y + 1),
-      ];
+      cellsForKill.push(board.getCellWithOffset(1, 1));
+      cellsForKill.push(board.getCellWithOffset(-1, 1));
     } else {
-      cellsForKill = [
-        board.getCellWithCoords(coords.x + 1, coords.y - 1),
-        board.getCellWithCoords(coords.x - 1, coords.y - 1),
-      ];
+      cellsForKill.push(board.getCellWithOffset(1, -1));
+      cellsForKill.push(board.getCellWithOffset(-1, -1));
     }
 
     cellsForKill.forEach((c) => {
@@ -63,10 +58,10 @@ class Pawn extends Figure {
   }
 
   /** @param {Board} board */
-  #setAvailableTakeEnPass(board, coords) {
+  #setAvailableTakeEnPass(board) {
     let cellsNextToSelectedCell = [
-      board.getCellWithCoords(coords.x + 1, coords.y),
-      board.getCellWithCoords(coords.x - 1, coords.y),
+      board.getCellWithOffset(1, 0),
+      board.getCellWithOffset(-1, 0),
     ];
     let availableCell;
 
@@ -78,15 +73,9 @@ class Pawn extends Figure {
         c.figure.hasRecentlyDoublemoved
       ) {
         if (this.team === "black") {
-          availableCell = board.getCellWithCoords(
-            c.getCoords().x,
-            c.getCoords().y + 1
-          );
+          availableCell = board.getCellWithOffset(0, 1, c);
         } else {
-          availableCell = board.getCellWithCoords(
-            c.getCoords().x,
-            c.getCoords().y - 1
-          );
+          availableCell = board.getCellWithOffset(0, -1, c);
         }
       }
     });
