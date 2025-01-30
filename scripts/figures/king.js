@@ -35,39 +35,37 @@ class King extends Figure {
   #setAvailableCastles(board) {
     if (!this.hasMoved) {
       this.#setAvailableKingsideCastle(board);
-      this.#setAvailableQueensideCastle(board)
+      this.#setAvailableQueensideCastle(board);
     }
   }
 
   #setAvailableKingsideCastle(board) {
-    const kingSideRookCell = board.getCellWithOffset(3, 0);
-    let isAvailableCastle = true;
+    const rookCellOffsetX = 3;
+    const kingSideRookCell = board.getCellWithOffset(rookCellOffsetX, 0);
 
-    for (let i = 2; i > 0; i--) {
-      const checkCell = board.getCellWithOffset(i, 0);
-      console.log(i)
-      if (!checkCell.isEmpty()) {
-        isAvailableCastle = false;
-      }
-    }
-
-    if (
-      isAvailableCastle &&
-      kingSideRookCell.hasFigureWithType("rook") &&
-      !kingSideRookCell.figure.hasMoved
-    ) {
-      this.setAvailableCellWithOffset({ x: 2, y: 0 }, board);
-      const cellForCastle = board.getCellWithOffset(2, 0);
-      cellForCastle.setIsAvailableCastle(true);
-    }
+    this.#setAvailableCastleOnCellWithRookAndCellOffsetX(
+      rookCellOffsetX,
+      kingSideRookCell,
+      board
+    );
   }
 
   #setAvailableQueensideCastle(board) {
-    const queenSideRookCell = board.getCellWithOffset(-4, 0);
+    const rookCellOffsetX = -4;
+    const queenSideRookCell = board.getCellWithOffset(rookCellOffsetX, 0);
+
+    this.#setAvailableCastleOnCellWithRookAndCellOffsetX(
+      rookCellOffsetX,
+      queenSideRookCell,
+      board
+    );
+  }
+
+  #setAvailableCastleOnCellWithRookAndCellOffsetX(offsetX, rookCell, board) {
     let isAvailableCastle = true;
 
-    for (let i = 3; i > 0; i--) {
-      const checkCell = board.getCellWithOffset(-i, 0);
+    for (let i = Math.abs(offsetX) - 1; i > 0; i--) {
+      const checkCell = board.getCellWithOffset(offsetX < 0 ? -i : i, 0);
       if (!checkCell.isEmpty()) {
         isAvailableCastle = false;
       }
@@ -75,11 +73,11 @@ class King extends Figure {
 
     if (
       isAvailableCastle &&
-      queenSideRookCell.hasFigureWithType("rook") &&
-      !queenSideRookCell.figure.hasMoved
+      rookCell.hasFigureWithType("rook") &&
+      !rookCell.figure.hasMoved
     ) {
-      this.setAvailableCellWithOffset({ x: -2, y: 0 }, board);
-      const cellForCastle = board.getCellWithOffset(-2, 0);
+      this.setAvailableCellWithOffset({ x: offsetX < 0 ? -2 : 2, y: 0 }, board);
+      const cellForCastle = board.getCellWithOffset(offsetX < 0 ? -2 : 2, 0);
       cellForCastle.setIsAvailableCastle(true);
     }
   }
