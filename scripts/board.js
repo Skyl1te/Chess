@@ -5,9 +5,10 @@ class Board extends GameObject {
   /**@type {Cell} */
   selectedCell = null;
   currentTurn = "white";
-
+  
   constructor() {
     super();
+    document.querySelector('#turn').innerHTML = this.currentTurn;
     this.rootEl = document.querySelector(".board");
   }
 
@@ -114,13 +115,14 @@ class Board extends GameObject {
       this.#selectCell(cell);
     } else {
       this.#resetActiveCell();
-      alert(`It's ${this.currentTurn}'s turn`);
+      // alert(`It's ${this.currentTurn}'s turn`);
     }
     this.#resetAvailableCellsForMove();
   }
 
   #switchTurn() {
     this.currentTurn = this.currentTurn === "white" ? "black" : "white";
+    document.querySelector('#turn').innerHTML = this.currentTurn;
   }
 
   #resetActiveCell() {
