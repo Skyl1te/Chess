@@ -1,8 +1,10 @@
 class Board extends GameObject {
+
   /** @type {Cell[][]} */
   cells = [];
   /**@type {Cell} */
   selectedCell = null;
+  currentTurn = "white";
 
   constructor() {
     super();
@@ -38,9 +40,9 @@ class Board extends GameObject {
   #initPawns() {
     for (let i = 0; i < 8; i++) {
       const pawnWhite = new Pawn("white");
-      const pawnBalck = new Pawn("black");
+      const pawnBlack = new Pawn("black");
       this.setFigurePosition(pawnWhite, POSITION_LETTERS[i] + 2);
-      this.setFigurePosition(pawnBalck, POSITION_LETTERS[i] + 7);
+      this.setFigurePosition(pawnBlack, POSITION_LETTERS[i] + 7);
     }
   }
 
@@ -105,15 +107,27 @@ class Board extends GameObject {
     if (cell.isAvailable) {
       this.#moveSelectedFigureTo(cell);
       this.#resetActiveCell();
-    } else {
+      this.#switchTurn();
+    } 
+    //turns checking
+    else if (cell.figure && cell.figure.team === this.currentTurn) {
       this.#selectCell(cell);
+    } else {
+      this.#resetActiveCell();
+      alert(`It's ${this.currentTurn}'s turn`);
     }
     this.#resetAvailableCellsForMove();
   }
 
+  #switchTurn() {
+    this.currentTurn = this.currentTurn === "white" ? "black" : "white";
+  }
+
   #resetActiveCell() {
-    this.selectedCell.removeClassName("active");
-    this.selectedCell = null;
+    if (this.selectedCell) {
+      this.selectedCell.removeClassName("active");
+      this.selectedCell = null;
+    }
   }
 
   #selectCell(cell) {

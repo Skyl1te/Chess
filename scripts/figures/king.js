@@ -20,15 +20,21 @@ class King extends Figure {
 
   /** @param {Board} board */
   #setAvailableBaseMoves(board) {
-    this.setAvailableCellWithOffset({ x: 1, y: 1 }, board);
-    this.setAvailableCellWithOffset({ x: -1, y: 1 }, board);
-    this.setAvailableCellWithOffset({ x: -1, y: -1 }, board);
-    this.setAvailableCellWithOffset({ x: 1, y: -1 }, board);
+    //! adding the directions for the king
+    const directions = [
+      { x: 1, y: 1 },
+      { x: -1, y: 1 },
+      { x: -1, y: -1 },
+      { x: 1, y: -1 },
+      { x: 0, y: 1 },
+      { x: -1, y: 0 },
+      { x: 0, y: -1 },
+      { x: 1, y: 0 },
+    ];
 
-    this.setAvailableCellWithOffset({ x: 0, y: 1 }, board);
-    this.setAvailableCellWithOffset({ x: -1, y: 0 }, board);
-    this.setAvailableCellWithOffset({ x: 0, y: -1 }, board);
-    this.setAvailableCellWithOffset({ x: 1, y: 0 }, board);
+    for (const direction of directions) {
+      this.setAvailableCellWithOffset(direction, board);
+    }
   }
 
   /** @param {Board} board */

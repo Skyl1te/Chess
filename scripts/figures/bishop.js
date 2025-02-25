@@ -9,23 +9,20 @@ class Bishop extends Figure {
         "https://upload.wikimedia.org/wikipedia/commons/8/81/Chess_bdt60.png";
     }
   }
+  
 
   displayAvailableCellsForMove(board) {
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: 1,
-      y: 1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: -1,
-      y: -1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: -1,
-      y: 1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: 1,
-      y: -1,
-    });
+
+    //! adding the directions for the bishop
+    const directions = [
+      { x: 1, y: 1 },
+      { x: -1, y: -1 },
+      { x: -1, y: 1 },
+      { x: 1, y: -1 }
+    ];
+
+    for (let direction of directions) {
+      this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, direction);
+    }
   }
 }

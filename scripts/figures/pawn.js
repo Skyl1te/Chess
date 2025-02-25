@@ -41,18 +41,12 @@ class Pawn extends Figure {
 
   /** @param {Board} board */
   #setAvailableKills(board) {
-    let cellsForKill = [];
-    if (this.team === "black") {
-      cellsForKill.push(board.getCellWithOffset(1, 1));
-      cellsForKill.push(board.getCellWithOffset(-1, 1));
-    } else {
-      cellsForKill.push(board.getCellWithOffset(1, -1));
-      cellsForKill.push(board.getCellWithOffset(-1, -1));
-    }
+    const directions = this.team === "black" ? [{ x: 1, y: 1 }, { x: -1, y: 1 }] : [{ x: 1, y: -1 }, { x: -1, y: -1 }];
 
-    cellsForKill.forEach((c) => {
-      if (c && c.figure && c.figure.team !== this.team) {
-        c.setIsAvailable(true);
+    directions.forEach((direction) => {
+      const cell = board.getCellWithOffset(direction.x, direction.y);
+      if (cell && cell.figure && cell.figure.team !== this.team) {
+        cell.setIsAvailable(true);
       }
     });
   }
@@ -84,6 +78,40 @@ class Pawn extends Figure {
     super.move(fromCell, toCell);
     if (Math.abs(fromCell.getCoords().y - toCell.getCoords().y) === 2) {
       this.setHasRecentlyDoublemoved(true);
+    }
+
+    // check if pawn can be promoted
+    if ((this.team === "white" && toCell.getCoords().y === 0) || (this.team === "black" && toCell.getCoords().y === 7)) {
+      toCell.rootEl.removeChild(toCell.rootEl.children[0]);
+      this.promote(toCell);
+    }
+  }
+
+  promote(cell) {
+    const choice = prompt("Select the piece you want to replace the pawn with: 1 - Knight, 2 - Rook, 3 - Bishop, 4 - Queen");
+
+    switch (choice) {
+      case '1':
+        cell.setFigure(new Knight(this.team));
+        break;
+      case '2':
+        cell.setFigure(new Rook(this.team));
+        break;
+      case '3':
+        cell.setFigure(new Bishop(this.team));
+        break;
+      case '4':
+        cell.setFigure(new Queen(this.team));
+        break;
+
+      default:
+        while (true) {
+          const choice = prompt("Select the piece you want to replace the pawn with: 1 - Knight, 2 - Rook, 3 - Bishop, 4 - Queen");
+          if (choice === '1' || choice === '2' || choice === '3' || choice === '4') {
+            break;
+          }
+        }
+        break;
     }
   }
 

@@ -12,34 +12,52 @@ class Queen extends Figure {
     }
   }
 
+  
   displayAvailableCellsForMove(board) {
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: 1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      y: 1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: -1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      y: -1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: 1,
-      y: 1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: -1,
-      y: -1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: -1,
-      y: 1,
-    });
-    this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
-      x: 1,
-      y: -1,
-    });
+    const directions =  [
+      {x: 1, y: 0},
+      {x: 0, y: 1},
+      {x: -1, y: 0},
+      {x: 0, y: -1},
+      {x: 1, y: 1},
+      {x: -1, y: -1},
+      {x: -1, y: 1},
+      {x: 1, y: -1} 
+    ]
+
+    //! adding the directions for the queen
+    for (let direction of directions) {
+      this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, direction);
+    }
+
+    // this.recursiveSetAvailableCellsWithOffset
+    // (board.selectedCell, board, {
+    //   x: 1,
+    // });
+    // this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+    //   y: 1,
+    // });
+    // this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+    //   x: -1,
+    // });
+    // this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+    //   y: -1,
+    // });
+    // this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+    //   x: 1,
+    //   y: 1,
+    // });
+    // this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+    //   x: -1,
+    //   y: -1,
+    // });
+    // this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+    //   x: -1,
+    //   y: 1,
+    // });
+    // this.recursiveSetAvailableCellsWithOffset(board.selectedCell, board, {
+    //   x: 1,
+    //   y: -1,
+    // });
   }
 }

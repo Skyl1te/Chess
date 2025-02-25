@@ -1,0 +1,36 @@
+
+.taken-figures {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	background-color: #2c3e50;
+	border-radius: 8px;
+	padding: 1rem;
+	color: #ecf0f1;
+
+	&__white-figures, &__black-figures {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		padding: 0.5rem;
+		min-height: 100px;
+		border-radius: 8px;
+		margin-bottom: 1rem;
+
+		img {
+			width: 40px;
+			height: 40px;
+			margin: 0.25rem;
+			border-radius: 4px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		}
+	}
+
+	&__white-figures {
+		background-color: #e74c3c;
+	}
+
+	&__black-figures {
+		background-color: #3498db;
+	}
+}

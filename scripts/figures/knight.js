@@ -11,28 +11,31 @@ class Knight extends Figure {
         "https://upload.wikimedia.org/wikipedia/commons/f/f1/Chess_ndt60.png";
     }
   }
-
-  /** @param {Board} board */
+  
   displayAvailableCellsForMove(board) {
-    const { x, y } = board.selectedCell.getCoords();
-    const offsets = [
-      [1, 2],
-      [-1, -2],
-      [-1, 2],
-      [1, -2],
-      [2, 1],
-      [-2, -1],
-      [-2, 1],
-      [2, -1],
+
+    //! adding the directions for the knight
+    const directions = [
+      { x: 1, y: 2 },
+      { x: -1, y: -2 },
+      { x: -1, y: 2 },
+      { x: 1, y: -2 },
+      { x: 2, y: 1 },
+      { x: -2, y: -1 },
+      { x: -2, y: 1 },
+      { x: 2, y: -1 },
     ];
 
-    offsets.forEach(([oX, oY]) => {
-      const cell = board.getCellWithCoords(x + oX, y + oY);
-      if (cell) {
-        if (!(cell.figure && cell.figure.team === this.team)) {
-          cell.setIsAvailable(true);
-        }
-      }
-    });
+    for (const direction of directions) {
+      this.setAvailableCellWithOffset(board.selectedCell, board, direction);
+    }
+  }
+
+  setAvailableCellWithOffset(selectedCell, board, offset) {
+    const { x, y } = selectedCell.getCoords();
+    const cell = board.getCellWithCoords(x + offset.x, y + offset.y);
+    if (cell && !(cell.figure && cell.figure.team === this.team)) {
+      cell.setIsAvailable(true);
+    }
   }
 }
