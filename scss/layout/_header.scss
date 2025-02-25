@@ -1,0 +1,9 @@
+.header {
+	grid-column: span 2;
+}
+
+@media screen and (max-width: 1240px) {
+	.header {
+		width: 100%;
+	}
+}

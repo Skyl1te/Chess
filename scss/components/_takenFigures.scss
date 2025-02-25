@@ -7,6 +7,7 @@
 	border-radius: 8px;
 	padding: 1rem;
 	color: #ecf0f1;
+	width: 500px;
 
 	&__white-figures, &__black-figures {
 		display: flex;
@@ -32,5 +33,18 @@
 
 	&__black-figures {
 		background-color: #3498db;
+	}
+}
+
+
+@media screen and (max-width: 1240px) {
+	.taken-figures {
+		width: 700px;
+	}
+}
+
+@media screen and (max-width: 760px) {
+	.taken-figures {
+		max-width: 562px;
 	}
 }
